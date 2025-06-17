@@ -1,5 +1,10 @@
 export const Riddles = [
   {
+    question: "Start!",
+    answer: "Press the next arrow to start the flashcards :)",
+    difficulty: "none",
+  },
+  {
     question: "What has keys but can’t open locks?",
     answer: "A piano.",
     difficulty: "easy",
