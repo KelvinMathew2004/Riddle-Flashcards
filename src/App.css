@@ -75,5 +75,8 @@
   border-radius: 10px;
   transform: rotateX(-180deg);
   opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  gap: 1rem
 }
 

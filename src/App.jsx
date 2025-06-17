@@ -60,16 +60,16 @@ function App() {
     <div className="App">
       <div className="text">
         <h1>Riddle Me This!</h1>
-        <h3>Could be fun! Could be frustrating! You will never until you try!</h3>
+        <h3>Could be fun! Could be frustrating! You will never know until you try!</h3>
         <h4> Number of cards: {Riddles.length-1}</h4>
       </div>
       <div class="flip-card" onClick={flipCard}>
         <div class="flip-card-inner" style={{ transform: rotation}} >
           <div class="flip-card-front" style={{ backgroundColor: frontColor, color: frontTextColor }}>
-            {/* <img src="img_avatar.png" alt="Avatar" style="width:300px;height:300px;"/> */}
             <h3 style={{ padding: "3rem", lineHeight: "2.5" }}>{Riddles[card].question}</h3>
           </div>
           <div class="flip-card-back" style={{ backgroundColor: backColor, color: backTextColor }}>
+            <img src={Riddles[card].image} style={{maxWidth: "200px", maxHeight: "200px", padding: "1rem"}}/>
             <h3 style={{ padding: "3rem", lineHeight: "2.5" }}>{Riddles[card].answer}</h3>
           </div>
         </div>
