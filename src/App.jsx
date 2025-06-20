@@ -10,6 +10,18 @@ function App() {
   const [backTextColor, setBackTextColor] = useState("white")
   const [flipped, setFlipped] = useState(false)
   const [rotation, setRotation] = useState("rotateX(0deg)")
+  const [correct_answer, setCorrectAnswer] = useState({})
+
+  const checkAnswer = (e) => {
+    e.preventDefault()
+    const userAnswer = document.getElementById(correct_answer).value.trim().toLowerCase().replace(/[^a-z0-9]/gi, '');
+    const correctAnswer = Riddles[card].answer.trim().toLowerCase().replace(/[^a-z0-9]/gi, '');
+    if (userAnswer === correctAnswer) {
+      setCorrectAnswer("correct");
+    } else {
+      setCorrectAnswer("wrong");
+    }
+  }
 
   const nextCard = () => {
     setFlipped(false)
@@ -20,6 +32,41 @@ function App() {
       setCard(next)
 
       const difficulty = Riddles[next].difficulty
+
+      setFrontColor(
+        difficulty === "easy" ? "#8BCBA1" :
+        difficulty === "medium" ? "#F5DE85" :
+        difficulty === "hard" ? "#F4A8A8" :
+        "grey"
+      )
+
+      setFrontTextColor(
+        difficulty === "easy" ? "#1C3F2B" :
+        difficulty === "medium" ? "#4A3A00" :
+        difficulty === "hard" ? "#5C1C1C" :
+        "black"
+      )
+
+      setBackColor(
+        difficulty === "easy" ? "#2B8A3E" :
+        difficulty === "medium" ? "#A07900" :
+        difficulty === "hard" ? "#C92A2A" :
+        "#333"
+      )
+
+      setBackTextColor("#FFFFFF")
+    }, 250)
+  }
+
+  const prevCard = () => {
+    setFlipped(false)
+    setRotation(flipped)
+    
+    setTimeout(() => {
+      const prev = card > 1 ? card - 1 : Riddles.length - 1
+      setCard(prev)
+
+      const difficulty = Riddles[prev].difficulty
 
       setFrontColor(
         difficulty === "easy" ? "#8BCBA1" :
@@ -74,7 +121,15 @@ function App() {
           </div>
         </div>
       </div>
-      <button className="next-button" onClick={nextCard}>Next</button>
+      <div className="answer-space">
+        <h3>Guess the answer here: </h3>
+        <input type="text" className="answer-input" id={correct_answer} placeholder='Place your answer here...' />
+        <button className="submit-button" onClick={checkAnswer} >Submit</button>
+      </div>
+      <div className="button-container">
+        <button className="prev-button" onClick={prevCard}>Previous</button>
+        <button className="next-button" onClick={nextCard}>Next</button>
+      </div>
     </div>
   )
 }

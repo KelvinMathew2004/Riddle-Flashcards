@@ -80,3 +80,37 @@
   gap: 1rem
 }
 
+.answer-space {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+}
+
+.answer-input {
+  width: 200px;
+  padding: 10px;
+}
+
+#wrong {
+  color: red;
+  border: red 2px solid;
+  font-weight: bold;
+}
+
+#correct {
+  color: lightgreen;
+  border: lightgreen 2px solid;
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+}
+
