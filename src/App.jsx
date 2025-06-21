@@ -14,6 +14,14 @@ function App() {
   const [prevFunc, setPrevFunc] = useState("disabled")
   const [nextFunc, setNextFunc] = useState("enabled")
   const [random, setRandom] = useState(false)
+  const [currScore, setCurrScore] = useState(0)
+  const [highScore, setHighScore] = useState(0)
+  const [skippedCards, setSkippedCards] = useState(new Set());
+
+  const skipCurrentCard = () => {
+    setSkippedCards(prev => new Set(prev).add(card));
+    nextCard();
+  };
 
   const checkAnswer = (e) => {
     e.preventDefault()
@@ -21,8 +29,13 @@ function App() {
     const correctAnswer = Riddles[card].answer.trim().toLowerCase().replace(/^(a |an |your )/, '').replace(/[^a-z0-9]/gi, '');
     if (userAnswer === correctAnswer) {
       setCorrectAnswer("correct");
+      setCurrScore(currScore+1)
     } else {
+      if (currScore > highScore) {
+        setHighScore(currScore)
+      }
       setCorrectAnswer("wrong");
+      setCurrScore(0)
     }
   }
 
@@ -45,21 +58,32 @@ function App() {
       let next = 0
 
       if (random === false) {
-        next = card + 1
+        let tempNext = card;
+        let initialCard = card;
 
-        if (next === Riddles.length - 1) {
-          setNextFunc("disabled");
-        } else {
-          setNextFunc("enabled");
-        }
+        do {
+          tempNext++;
+          if (tempNext >= Riddles.length) {
+            tempNext = 1;
+          }
+          if (tempNext === initialCard) {
+            next = initialCard;
+            break;
+          }
+        } while (skippedCards.has(tempNext));
 
-        if (next !== 1) {
-          setPrevFunc("enabled");
-        }
+        next = tempNext;
+        setNextFunc(next === Riddles.length - 1 ? "disabled" : "enabled");
+        setPrevFunc(next !== 1 ? "enabled" : "disabled");
+
       } else {
         do {
           next = Math.floor(Math.random() * (Riddles.length - 1)) + 1;
-        } while (next === card && Riddles.length > 2);
+        } while (
+          (next === card || skippedCards.has(next)) &&
+          skippedCards.size < Riddles.length - 2
+        );
+
         setPrevFunc("enabled");
       }
       
@@ -106,18 +130,33 @@ function App() {
       let prev = 0
 
       if (random === false) {
-        prev = card - 1
+        let tempPrev = card;      
+        let initialCard = card;
 
-        if (prev === 1) {
-          setPrevFunc("disabled");
-        } else {
-          setPrevFunc("enabled");
-        }
+        do {
+          tempPrev--;
+          if (tempPrev <= 0) {
+            tempPrev = Riddles.length - 1;
+          }
+          
+          if (tempPrev === initialCard) {
+              prev = initialCard;
+              break;
+          }
+        } while (skippedCards.has(tempPrev));
 
+        prev = tempPrev;
+        setPrevFunc(prev === 1 ? "disabled" : "enabled");
+        setNextFunc("enabled");
       } else {
         do {
           prev = Math.floor(Math.random() * (Riddles.length - 1)) + 1;
-        } while (prev === card && Riddles.length > 2);
+        } while (
+          (prev === card || skippedCards.has(prev)) &&
+          skippedCards.size < Riddles.length - 2
+        );
+
+        setNextFunc("enabled");
       }
 
       setNextFunc("enabled");
@@ -166,7 +205,11 @@ function App() {
       <div className="text">
         <h1>Riddle Me This!</h1>
         <h3>Could be fun! Could be frustrating! You will never know until you try!</h3>
-        <h4> Riddle {card} of {Riddles.length-1}</h4>
+        <div className='numbers'>
+          <h4>🗒️ {card}/{Riddles.length-skippedCards.size-1}</h4>
+          <h4>✅ {currScore}</h4>
+          <h4>👑 {highScore}</h4>
+        </div>
       </div>
       <div class="flip-card" onClick={flipCard}>
         <div class="flip-card-inner" style={{ transform: rotation}} >
@@ -189,6 +232,7 @@ function App() {
       <div className="button-container">
         <button onClick={prevCard} id={prevFunc}>Previous</button>
         <button onClick={nextCard} id={nextFunc}>Next</button>
+        <button onClick={skipCurrentCard}>Master</button>
         <button onClick={() => {if (random == false) nextCard(); setRandom(!random);}} id={random ? "shuffle-on" : "shuffle-off"}>Shuffle Cards</button>
       </div>
     </div>
