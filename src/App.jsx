@@ -11,11 +11,14 @@ function App() {
   const [flipped, setFlipped] = useState(false)
   const [rotation, setRotation] = useState("rotateX(0deg)")
   const [correct_answer, setCorrectAnswer] = useState({})
+  const [prevFunc, setPrevFunc] = useState("disabled")
+  const [nextFunc, setNextFunc] = useState("enabled")
+  const [random, setRandom] = useState(false)
 
   const checkAnswer = (e) => {
     e.preventDefault()
-    const userAnswer = document.getElementById(correct_answer).value.trim().toLowerCase().replace(/[^a-z0-9]/gi, '');
-    const correctAnswer = Riddles[card].answer.trim().toLowerCase().replace(/[^a-z0-9]/gi, '');
+    const userAnswer = document.getElementById(correct_answer).value.trim().toLowerCase().replace(/^(a |an |your )/, '').replace(/[^a-z0-9]/gi, '');
+    const correctAnswer = Riddles[card].answer.trim().toLowerCase().replace(/^(a |an |your )/, '').replace(/[^a-z0-9]/gi, '');
     if (userAnswer === correctAnswer) {
       setCorrectAnswer("correct");
     } else {
@@ -23,12 +26,43 @@ function App() {
     }
   }
 
+  const noAnswer = (e) => {
+    e.preventDefault();
+    setCorrectAnswer("blank");
+  }
+
   const nextCard = () => {
+    if (nextFunc === "disabled") {
+      return;
+    }
     setFlipped(false)
     setRotation(flipped)
+    setCorrectAnswer("blank");
+    document.getElementById(correct_answer).value = "";
     
     setTimeout(() => {
-      const next = card < Riddles.length - 1 ? card + 1 : 1
+
+      let next = 0
+
+      if (random === false) {
+        next = card + 1
+
+        if (next === Riddles.length - 1) {
+          setNextFunc("disabled");
+        } else {
+          setNextFunc("enabled");
+        }
+
+        if (next !== 1) {
+          setPrevFunc("enabled");
+        }
+      } else {
+        do {
+          next = Math.floor(Math.random() * (Riddles.length - 1)) + 1;
+        } while (next === card && Riddles.length > 2);
+        setPrevFunc("enabled");
+      }
+      
       setCard(next)
 
       const difficulty = Riddles[next].difficulty
@@ -59,11 +93,35 @@ function App() {
   }
 
   const prevCard = () => {
+    if (prevFunc === "disabled") {
+      return;
+    }
     setFlipped(false)
     setRotation(flipped)
+    setCorrectAnswer("blank");
+    document.getElementById(correct_answer).value = "";
     
     setTimeout(() => {
-      const prev = card > 1 ? card - 1 : Riddles.length - 1
+
+      let prev = 0
+
+      if (random === false) {
+        prev = card - 1
+
+        if (prev === 1) {
+          setPrevFunc("disabled");
+        } else {
+          setPrevFunc("enabled");
+        }
+
+      } else {
+        do {
+          prev = Math.floor(Math.random() * (Riddles.length - 1)) + 1;
+        } while (prev === card && Riddles.length > 2);
+      }
+
+      setNextFunc("enabled");
+
       setCard(prev)
 
       const difficulty = Riddles[prev].difficulty
@@ -108,7 +166,7 @@ function App() {
       <div className="text">
         <h1>Riddle Me This!</h1>
         <h3>Could be fun! Could be frustrating! You will never know until you try!</h3>
-        <h4> Number of cards: {Riddles.length-1}</h4>
+        <h4> Riddle {card} of {Riddles.length-1}</h4>
       </div>
       <div class="flip-card" onClick={flipCard}>
         <div class="flip-card-inner" style={{ transform: rotation}} >
@@ -123,12 +181,15 @@ function App() {
       </div>
       <div className="answer-space">
         <h3>Guess the answer here: </h3>
-        <input type="text" className="answer-input" id={correct_answer} placeholder='Place your answer here...' />
-        <button className="submit-button" onClick={checkAnswer} >Submit</button>
+        <form className="answer-form" onSubmit={checkAnswer}>
+          <input type="text" className="answer-input" id={correct_answer} placeholder='Place your answer here...' onChange={noAnswer}/>
+          <button className="submit-button" >Submit</button>
+        </form>
       </div>
       <div className="button-container">
-        <button className="prev-button" onClick={prevCard}>Previous</button>
-        <button className="next-button" onClick={nextCard}>Next</button>
+        <button onClick={prevCard} id={prevFunc}>Previous</button>
+        <button onClick={nextCard} id={nextFunc}>Next</button>
+        <button onClick={() => {if (random == false) nextCard(); setRandom(!random);}} id={random ? "shuffle-on" : "shuffle-off"}>Shuffle Cards</button>
       </div>
     </div>
   )
