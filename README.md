@@ -1,14 +1,8 @@
-# Web Development Project 2 & 3 - *Riddle Me This!*
-
-Submitted by: **Kelvin Mathew**
+# *Riddle Me This!*
 
 This web app: Flashcards for Riddles from different difficulty categories with abilities to shuffle, keep track of scores and master riddles.
 
-Time spent: **13** hours spent in total
-
-## Required Features
-
-The following **required** functionality is completed:
+## Features
 
 - [x] **The user can enter their guess into an input box *before* seeing the flipside of the card**
   - Application features a clearly labeled input box with a submit button where users can type in a guess
@@ -18,10 +12,6 @@ The following **required** functionality is completed:
   - A forward/next button displayed on the card navigates to the next card in a set sequence when clicked
   - A previous/back button displayed on the card returns to the previous card in the set sequence when clicked
   - Both the next and back buttons should have some visual indication that the user is at the beginning or end of the list (for example, graying out and no longer being available to click), not allowing for wrap-around navigation
-
-The following **optional** features are implemented:
-
-
 - [x] Users can use a shuffle button to randomize the order of the cards
   - Cards should remain in the same sequence (**NOT** randomized) unless the shuffle button is clicked 
   - Cards should change to a random sequence once the shuffle button is clicked
@@ -38,16 +28,12 @@ The following **optional** features are implemented:
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of implemented flashcards:
 
 <img src='Walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with ...  
 [Kap](https://getkap.co/) for macOS
-
-## Notes
-
-Creating the flashcards was a bit tricky and so were implementing the navigation, shuffle and master features.
 
 ## License
 
