@@ -9,7 +9,7 @@ export const Riddles = [
     question: "What can you catch but not throw?",
     answer: "A cold.",
     difficulty: "easy",
-    image: "https://static-00.iconduck.com/assets.00/cold-face-emoji-2006x2048-1j861zw3.png",
+    image: "https://images.emojiterra.com/google/noto-emoji/unicode-16.0/color/1024px/1f976.png",
   },
   {
     question: "What has a neck but no head?",
@@ -111,7 +111,7 @@ export const Riddles = [
     question: "What comes down but never goes up?",
     answer: "Rain.",
     difficulty: "hard",
-    image: "https://static.vecteezy.com/system/resources/previews/053/715/524/non_2x/blue-umbrella-with-rain-drops-isolated-on-transparent-background-symbolizing-protection-and-rainy-weather-in-a-refreshing-illustration-png.png",
+    image: "https://png.pngtree.com/png-vector/20220608/ourmid/pngtree-umbrella-and-rain-drops-on-white-background-png-image_4902370.png",
   },
   {
     question: "You see a boat filled with people, yet there isn’t a single person on board. How is that possible?",
